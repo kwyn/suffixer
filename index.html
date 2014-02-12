@@ -1,0 +1,39 @@
+<html ng-app="suffixer">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Suffixer</title>
+    <script src='bower_components/angular/angular.js'> </script>
+    <script src='bower_components/angular-route/angular-route.js'> </script>
+    <script src='bower_components/angular-bootstrap/ui-bootstrap.js'> </script>
+    <script src='app.js'> </script>
+
+    <link rel="stylesheet" type="text/css" href="bootstrap.css"> 
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-ui/build/angular-ui.css">
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+    <div class="container" ng-controller='frameController'>
+    <div class="jumbotron">
+     <h1 class="bs-header">Suffixer</h1>
+     <blockquote> “An original idea. That can't be too hard. The library must be full of them.” <footer>Stephen Fry </footer> </blockquote>
+     <form class="form-group" name="ideaForm" ng-submit="search(idea)">
+       <input class="form-control" type="text" ng-model="idea" placeholder="Your idea goes here" >
+     </form>
+      <form class="btn-group" ng-click='search(idea)'>
+        <button type="button" class="btn btn-success" ng-click="filterState = 'noFilter'">Search</button>
+        <button type="button" class="btn btn-info" ng-click="filterState = 'filterVowels'">Remove Vowels</button>
+        <button type="button" class="btn btn-info" ng-click="filterState = 'swap'">Swap Similar Sounds</button>
+      </form>
+    </div>
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="result in results track by $index">
+        <a class='lead' ng-href="http://www.{{result}}">{{result}}</a>
+      </li>
+    </ul>
+    <div class="alert alert-info" ng-show="fail"> No Dice... </div>
+</div>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "domain-suffixer",
+  "version": "0.0.1",
+  "homepage": "https://github.com/HarleyKwyn/domain-suffixer",
+  "authors": [
+    "HarleyKwyn <kwyn.meagher@gmail.com>"
+  ],
+  "description": "find your perfect url",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-ui": "~0.4.0",
+    "angular": "~1.2.12",
+    "angular-bootstrap": "~0.10.0"
+  }
+}
