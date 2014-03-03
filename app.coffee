@@ -1,4 +1,3 @@
-
 angular.module "suffixer", ['ui.bootstrap']
  
   .controller 'frameController', ($scope, $http) =>
@@ -27,7 +26,6 @@ angular.module "suffixer", ['ui.bootstrap']
 
     domainObject[value.substring(1)] = value for value in domain
 
-    vowelObject = { 'a' : 'a', 'e' : 'e', 'i': 'i', 'o' : 'o', 'u' : 'u', 'y': 'y'}
     vowelArray = ['a','e','i','o','u','y']
 
     ################################################################
@@ -59,7 +57,7 @@ angular.module "suffixer", ['ui.bootstrap']
 
     ###############################################################
     # TODO: Letter Substitution
-    swapArray = [['f', 'ph'], ['j', 'g'], ['j', 'ge'], ['c', 'k'], ['q', 'k'], ['z','s'], ['s', 'z']] 
+    swapArray = [['f', ['ph']], ['j', ['g']], ['j', ['ge']], ['c', ['k']], ['q', ['k']], ['z',['s']], ['s', ['z']] ]  
     swapLetters = (word, swap)->
       results = [word.join('')]
       swapper = (wordCopy, index) ->
@@ -68,7 +66,7 @@ angular.module "suffixer", ['ui.bootstrap']
           charidx = wordCopy.indexOf char
           if charidx > -1
             copy = []
-            copy = wordCopy[0...charidx].concat [swap[index][1]] .concat wordCopy[charidx+1 ..]
+            copy = wordCopy[0...charidx].concat [swap[index][1][0]] .concat wordCopy[charidx+1 ..]
             if (results.indexOf copy) == -1
               results.push copy.join('')
             if (copy.indexOf char ) > -1
@@ -99,6 +97,11 @@ angular.module "suffixer", ['ui.bootstrap']
           else
             suffixes.shift()
         results
+      for word in words 
+        domains.push("#{word}.com")
+        domains.push("#{word}.net")
+        domains.push("#{word}.org")
+
       for word in words
         domains.push item for item in findit word
       domains

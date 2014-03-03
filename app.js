@@ -2,7 +2,7 @@
 (function() {
   angular.module("suffixer", ['ui.bootstrap']).controller('frameController', (function(_this) {
     return function($scope, $http) {
-      var domain, domainObject, findDomains, removeLetters, swapArray, swapLetters, value, vowelArray, vowelObject, _i, _len;
+      var domain, domainObject, findDomains, removeLetters, swapArray, swapLetters, value, vowelArray, _i, _len;
       $scope.idea = '';
       $scope.results;
       $scope.filterState = "noFilter";
@@ -12,14 +12,6 @@
         value = domain[_i];
         domainObject[value.substring(1)] = value;
       }
-      vowelObject = {
-        'a': 'a',
-        'e': 'e',
-        'i': 'i',
-        'o': 'o',
-        'u': 'u',
-        'y': 'y'
-      };
       vowelArray = ['a', 'e', 'i', 'o', 'u', 'y'];
       removeLetters = function(word, letters) {
         var copy, remove, results;
@@ -48,7 +40,7 @@
         remove(copy, 0);
         return results;
       };
-      swapArray = [['f', 'ph'], ['j', 'g'], ['j', 'ge'], ['c', 'k'], ['q', 'k'], ['z', 's'], ['s', 'z']];
+      swapArray = [['f', ['ph']], ['j', ['g']], ['j', ['ge']], ['c', ['k']], ['q', ['k']], ['z', ['s']], ['s', ['z']]];
       swapLetters = function(word, swap) {
         var copy, results, swapper;
         results = [word.join('')];
@@ -59,7 +51,7 @@
             charidx = wordCopy.indexOf(char);
             if (charidx > -1) {
               copy = [];
-              copy = wordCopy.slice(0, charidx).concat([swap[index][1]].concat(wordCopy.slice(charidx + 1)));
+              copy = wordCopy.slice(0, charidx).concat([swap[index][1][0]].concat(wordCopy.slice(charidx + 1)));
               if ((results.indexOf(copy)) === -1) {
                 results.push(copy.join(''));
               }
@@ -80,7 +72,7 @@
         return results;
       };
       findDomains = function(words) {
-        var domains, findit, item, word, _j, _k, _len1, _len2, _ref;
+        var domains, findit, item, word, _j, _k, _l, _len1, _len2, _len3, _ref;
         domains = [];
         findit = function(word) {
           var results, suffix, suffixes, wordArray;
@@ -100,9 +92,15 @@
         };
         for (_j = 0, _len1 = words.length; _j < _len1; _j++) {
           word = words[_j];
+          domains.push("" + word + ".com");
+          domains.push("" + word + ".net");
+          domains.push("" + word + ".org");
+        }
+        for (_k = 0, _len2 = words.length; _k < _len2; _k++) {
+          word = words[_k];
           _ref = findit(word);
-          for (_k = 0, _len2 = _ref.length; _k < _len2; _k++) {
-            item = _ref[_k];
+          for (_l = 0, _len3 = _ref.length; _l < _len3; _l++) {
+            item = _ref[_l];
             domains.push(item);
           }
         }
