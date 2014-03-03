@@ -10,7 +10,6 @@
 
     <link rel="stylesheet" type="text/css" href="bootstrap.css"> 
     <link rel="stylesheet" type="text/css" href="bower_components/angular-ui/build/angular-ui.css">
-    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
@@ -19,9 +18,11 @@
      <h1 class="bs-header">Suffixer</h1>
      <blockquote> “An original idea. That can't be too hard. The library must be full of them.” <footer>Stephen Fry </footer> </blockquote>
      <form class="form-group" name="ideaForm" ng-submit="search(idea)">
+       <p>Enter in a word or short phrase to transform into a URL<p>
        <input class="form-control" type="text" ng-model="idea" placeholder="Your idea goes here" >
      </form>
       <form class="btn-group" ng-click='search(idea)'>
+
         <button type="button" class="btn btn-success" ng-click="filterState = 'noFilter'">Search</button>
         <button type="button" class="btn btn-info" ng-click="filterState = 'filterVowels'">Remove Vowels</button>
         <button type="button" class="btn btn-info" ng-click="filterState = 'swap'">Swap Similar Sounds</button>

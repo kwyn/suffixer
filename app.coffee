@@ -31,19 +31,46 @@ angular.module "suffixer", ['ui.bootstrap']
     ################################################################
     # Helper functions
     ################################################################
+    # check if character is a vowel
+    isVowel = (char) ->
+      ['a', 'e', 'i', 'o', 'u', 'y'].indexOf(char) != -1
+    
+    # check if has at least one syllable by the rull that there must be a vowel within four characters
+    hasSyllables = (word) ->
+      if word.length < 4
+        return true
+      else
+        isSyllable = true
+        for char, i in word
+          console.log i
+          do ->
+            if( i+3 < word.length )
+              console.log word.slice i, i+4
+              hasVowel = false
+              for char in word.slice i, i+4
+                if isVowel char
+                  hasVowel = true
+              if !hasVowel
+                isSyllable = false
+                
+        return isSyllable
+
+            
+    
     # letter remover
     removeLetters = (word, letters) ->
       #letters = _.intersection word, letters 
       results = [word.join('')]
 
       remove = (wordCopy, index) ->
-        if index < letters.length
+        if index < letters.length && wordCopy.length > 4 
           char = letters[index]
           charidx = wordCopy.indexOf char
           if charidx > -1
             copy = []
             copy = wordCopy[0...charidx].concat wordCopy[charidx+1 ..]
-            results.push copy.join '' 
+            if hasSyllables copy
+              results.push copy.join '' 
             if (copy.indexOf char) > -1 
               remove copy, index
             else
@@ -67,7 +94,7 @@ angular.module "suffixer", ['ui.bootstrap']
           if charidx > -1
             copy = []
             copy = wordCopy[0...charidx].concat [swap[index][1][0]] .concat wordCopy[charidx+1 ..]
-            if (results.indexOf copy) == -1
+            if (results.indexOf copy) == -1 && hasSyllables copy
               results.push copy.join('')
             if (copy.indexOf char ) > -1
               swapper copy, index
@@ -78,7 +105,6 @@ angular.module "suffixer", ['ui.bootstrap']
           return null
       copy = word[..]
       swapper copy, 0
-      console.log results
       results
 
     ###############################################################
@@ -111,6 +137,8 @@ angular.module "suffixer", ['ui.bootstrap']
     $scope.removeVowels = false;
     $scope.search = (idea)->
       console.log $scope.filterState
+      idea = idea.replace " ", ""
+      idea - idea.toLower
       switch $scope.filterState
         when "filterVowels"
           options = removeLetters (idea.split '') , vowelArray

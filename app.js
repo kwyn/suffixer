@@ -2,7 +2,7 @@
 (function() {
   angular.module("suffixer", ['ui.bootstrap']).controller('frameController', (function(_this) {
     return function($scope, $http) {
-      var domain, domainObject, findDomains, removeLetters, swapArray, swapLetters, value, vowelArray, _i, _len;
+      var domain, domainObject, findDomains, hasSyllables, isVowel, removeLetters, swapArray, swapLetters, value, vowelArray, _i, _len;
       $scope.idea = '';
       $scope.results;
       $scope.filterState = "noFilter";
@@ -13,18 +13,54 @@
         domainObject[value.substring(1)] = value;
       }
       vowelArray = ['a', 'e', 'i', 'o', 'u', 'y'];
+      isVowel = function(char) {
+        return ['a', 'e', 'i', 'o', 'u', 'y'].indexOf(char) !== -1;
+      };
+      hasSyllables = function(word) {
+        var char, i, isSyllable, _fn, _j, _len1;
+        if (word.length < 4) {
+          return true;
+        } else {
+          isSyllable = true;
+          _fn = function() {
+            var hasVowel, _k, _len2, _ref;
+            if (i + 3 < word.length) {
+              console.log(word.slice(i, i + 4));
+              hasVowel = false;
+              _ref = word.slice(i, i + 4);
+              for (_k = 0, _len2 = _ref.length; _k < _len2; _k++) {
+                char = _ref[_k];
+                if (isVowel(char)) {
+                  hasVowel = true;
+                }
+              }
+              if (!hasVowel) {
+                return isSyllable = false;
+              }
+            }
+          };
+          for (i = _j = 0, _len1 = word.length; _j < _len1; i = ++_j) {
+            char = word[i];
+            console.log(i);
+            _fn();
+          }
+          return isSyllable;
+        }
+      };
       removeLetters = function(word, letters) {
         var copy, remove, results;
         results = [word.join('')];
         remove = function(wordCopy, index) {
           var char, charidx, copy;
-          if (index < letters.length) {
+          if (index < letters.length && wordCopy.length > 4) {
             char = letters[index];
             charidx = wordCopy.indexOf(char);
             if (charidx > -1) {
               copy = [];
               copy = wordCopy.slice(0, charidx).concat(wordCopy.slice(charidx + 1));
-              results.push(copy.join(''));
+              if (hasSyllables(copy)) {
+                results.push(copy.join(''));
+              }
               if ((copy.indexOf(char)) > -1) {
                 remove(copy, index);
               } else {
@@ -52,7 +88,7 @@
             if (charidx > -1) {
               copy = [];
               copy = wordCopy.slice(0, charidx).concat([swap[index][1][0]].concat(wordCopy.slice(charidx + 1)));
-              if ((results.indexOf(copy)) === -1) {
+              if ((results.indexOf(copy)) === -1 && hasSyllables(copy)) {
                 results.push(copy.join(''));
               }
               if ((copy.indexOf(char)) > -1) {
@@ -68,7 +104,6 @@
         };
         copy = word.slice(0);
         swapper(copy, 0);
-        console.log(results);
         return results;
       };
       findDomains = function(words) {
@@ -110,6 +145,8 @@
       return $scope.search = function(idea) {
         var options;
         console.log($scope.filterState);
+        idea = idea.replace(" ", "");
+        idea - idea.toLower;
         switch ($scope.filterState) {
           case "filterVowels":
             options = removeLetters(idea.split(''), vowelArray);
